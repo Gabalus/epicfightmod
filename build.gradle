@@ -91,12 +91,22 @@ repositories {
             includeGroup "curse.maven"
         }
     }
-    
+
+/*    maven {
+        // location of the maven that hosts JEI files before January 2023
+        name = "Progwml6's maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
     maven {
-    	// location of the maven that hosts JEI files since January 2023
-    	name = "Jared's maven"
-   		url = "https://maven.blamejared.com/"
-  	}
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }*/
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
 }
 
 mixin {
@@ -117,11 +127,11 @@ dependencies {
  	compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
   	// at runtime, use the full JEI jar for Forge
   	runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
-    
-    compileOnly fg.deobf("curse.maven:curios-309927:5367944")
-    
-    implementation fg.deobf("curse.maven:octo-lib-916747:5115332")
-    implementation fg.deobf("curse.maven:relics-mod-445274:5435202")
+
+    implementation fg.deobf("curse.maven:curios-309927:6238756")
+
+    implementation fg.deobf("curse.maven:octo-lib-916747:6274623")
+    implementation fg.deobf("curse.maven:relics-mod-445274:5710985")
     
     implementation fg.deobf("curse.maven:embeddium-908741:5556138")
     implementation fg.deobf("curse.maven:oculus-581495:5299671")
@@ -131,6 +141,8 @@ dependencies {
     
     implementation fg.deobf("curse.maven:ice-and-fire-dragons-264231:5633453")
     implementation fg.deobf("curse.maven:citadel-331936:5559513")
+
+    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
     
     // These mods don't allow 3rd party distribution
     compileOnly fg.deobf("local:skinlayers3d:1.6.6")
