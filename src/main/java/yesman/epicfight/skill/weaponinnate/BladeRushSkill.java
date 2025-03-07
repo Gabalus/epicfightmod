@@ -38,9 +38,16 @@ import yesman.epicfight.world.entity.eventlistener.PlayerEventListener.EventType
 
 public class BladeRushSkill extends WeaponInnateSkill {
 	public static Builder createBladeRushBuilder() {
-		return new Builder().setCategory(SkillCategories.WEAPON_INNATE);
+		return new Builder().setCategory(SkillCategories.WEAPON_INNATE).setResource(Resource.WEAPON_CHARGE)
+				.putTryAnimation(EntityType.ZOMBIE, Animations.BLADE_RUSH_TRY)
+				.putTryAnimation(EntityType.HUSK, Animations.BLADE_RUSH_TRY)
+				.putTryAnimation(EntityType.DROWNED, Animations.BLADE_RUSH_TRY)
+				.putTryAnimation(EntityType.SKELETON, Animations.BLADE_RUSH_TRY)
+				.putTryAnimation(EntityType.STRAY, Animations.BLADE_RUSH_TRY)
+				.putTryAnimation(EntityType.CREEPER, Animations.BLADE_RUSH_TRY);
 	}
-	
+
+
 	private static final UUID EVENT_UUID = UUID.fromString("444a1a6a-c2f1-11eb-8529-0242ac130003");
 	
 	public static class Builder extends Skill.Builder<BladeRushSkill> {
