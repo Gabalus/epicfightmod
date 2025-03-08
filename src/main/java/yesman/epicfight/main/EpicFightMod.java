@@ -50,16 +50,7 @@ import yesman.epicfight.client.ClientEngine;
 import yesman.epicfight.client.gui.screen.SkillBookScreen;
 import yesman.epicfight.client.gui.screen.config.IngameConfigurationScreen;
 import yesman.epicfight.client.renderer.patched.item.EpicFightItemProperties;
-import yesman.epicfight.compat.AzureLibArmorCompat;
-import yesman.epicfight.compat.AzureLibCompat;
-import yesman.epicfight.compat.FirstPersonCompat;
-import yesman.epicfight.compat.GeckolibCompat;
-import yesman.epicfight.compat.ICompatModule;
-import yesman.epicfight.compat.IRISCompat;
-import yesman.epicfight.compat.IceAndFireCompat;
-import yesman.epicfight.compat.SkinLayer3DCompat;
-import yesman.epicfight.compat.VampirismCompat;
-import yesman.epicfight.compat.WerewolvesCompat;
+import yesman.epicfight.compat.*;
 import yesman.epicfight.config.ConfigManager;
 import yesman.epicfight.config.EpicFightOptions;
 import yesman.epicfight.data.conditions.EpicFightConditions;
@@ -101,45 +92,45 @@ import yesman.epicfight.world.level.block.entity.EpicFightBlockEntities;
 
 /**
  *  Changes from 20.9.5 -> 20.9.6
- *  
+ *
  *  1. Fixed skill book screen not showing up when Enhanced Visuals installed
- *  
+ *
  *  2. Fixed witches not throwing potion
- *  
+ *
  *  3. Fixed custom armors parts invisible
- *  
+ *
  *  4. Fixed a crash when selecting mob capability model in datapack editor
- *  
+ *
  *  Changes from 20.9.5 -> 20.10.1
- *  
+ *
  *  1. Enhanced the accuracy of tracing ability of the player when attacking
- *  
+ *
  *  2. Cloth simulation for cape
- *  
+ *
  *  3. Config to enable dummy cape (experimental version only)
- *  
+ *
  *  --- TO DO ---
- *  
+ *
  *  Update language files (always)
- *  
+ *
  *  Add an reach property to attack animation (idea)
- *  
+ *
  *  Add an alert function when an entity targeting the player tries grappling or execution attack
- *  
+ *
  *  Add UI for execution resistance
- *  
+ *
  *  Add functionality to blooming effect (resists wither effect)
- *  
+ *
  *  Add a screen for setting animation properties in datapack editor
- *  
+ *
  *  First person animation system by adding /data/ folder in the path, and few samples
- *  
+ *
  *  Enhance the stun system (maybe remove or barely leave knockback)
- *  
+ *
  *  Add toasts & achievements to guide beginners
- *  
+ *
  *  Add resource hashing for animation file to prevent client modifying animation by resource pack
- *  
+ *
  *  @author yesman
  */
 @Mod("epicfight")
@@ -149,46 +140,46 @@ public class EpicFightMod {
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 	public static EpicFightOptions CLIENT_CONFIGS;
 	private static EpicFightMod instance;
-	
+
 	public static EpicFightMod getInstance() {
 		return instance;
 	}
-	
+
 	private Function<LivingEntityPatch<?>, Animator> animatorProvider;
-	
-    public EpicFightMod() {
-    	instance = this;
-    	
-    	ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigManager.CLIENT_CONFIG);
+
+	public EpicFightMod() {
+		instance = this;
+
+		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigManager.CLIENT_CONFIG);
 		final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-		
+
 		bus.addListener(this::constructMod);
-    	bus.addListener(this::doCommonStuff);
-    	bus.addListener(this::addPackFindersEvent);
-    	bus.addListener(this::buildCreativeTabWithSkillBooks);
-    	bus.addListener(SkillManager::createSkillRegistry);
-    	bus.addListener(SkillManager::registerSkills);
-    	bus.addListener(EpicFightCapabilities::registerCapabilities);
-    	bus.addListener(EpicFightEntities::onSpawnPlacementRegister);
-    	
-    	MinecraftForge.EVENT_BUS.addListener(this::command);
-        MinecraftForge.EVENT_BUS.addListener(this::addReloadListnerEvent);
-    	
-    	LivingMotion.ENUM_MANAGER.registerEnumCls(EpicFightMod.MODID, LivingMotions.class);
-    	SkillCategory.ENUM_MANAGER.registerEnumCls(EpicFightMod.MODID, SkillCategories.class);
-    	SkillSlot.ENUM_MANAGER.registerEnumCls(EpicFightMod.MODID, SkillSlots.class);
-    	Style.ENUM_MANAGER.registerEnumCls(EpicFightMod.MODID, Styles.class);
-    	WeaponCategory.ENUM_MANAGER.registerEnumCls(EpicFightMod.MODID, WeaponCategories.class);
-    	
-    	EpicFightMobEffects.EFFECTS.register(bus);
-    	EpicFightPotions.POTIONS.register(bus);
-        EpicFightAttributes.ATTRIBUTES.register(bus);
-        EpicFightCreativeTabs.TABS.register(bus);
-        EpicFightItems.ITEMS.register(bus);
-        EpicFightParticles.PARTICLES.register(bus);
-        EpicFightEntities.ENTITIES.register(bus);
-        EpicFightBlocks.BLOCKS.register(bus);
-        EpicFightBlockEntities.BLOCK_ENTITIES.register(bus);
+		bus.addListener(this::doCommonStuff);
+		bus.addListener(this::addPackFindersEvent);
+		bus.addListener(this::buildCreativeTabWithSkillBooks);
+		bus.addListener(SkillManager::createSkillRegistry);
+		bus.addListener(SkillManager::registerSkills);
+		bus.addListener(EpicFightCapabilities::registerCapabilities);
+		bus.addListener(EpicFightEntities::onSpawnPlacementRegister);
+
+		MinecraftForge.EVENT_BUS.addListener(this::command);
+		MinecraftForge.EVENT_BUS.addListener(this::addReloadListnerEvent);
+
+		LivingMotion.ENUM_MANAGER.registerEnumCls(EpicFightMod.MODID, LivingMotions.class);
+		SkillCategory.ENUM_MANAGER.registerEnumCls(EpicFightMod.MODID, SkillCategories.class);
+		SkillSlot.ENUM_MANAGER.registerEnumCls(EpicFightMod.MODID, SkillSlots.class);
+		Style.ENUM_MANAGER.registerEnumCls(EpicFightMod.MODID, Styles.class);
+		WeaponCategory.ENUM_MANAGER.registerEnumCls(EpicFightMod.MODID, WeaponCategories.class);
+
+		EpicFightMobEffects.EFFECTS.register(bus);
+		EpicFightPotions.POTIONS.register(bus);
+		EpicFightAttributes.ATTRIBUTES.register(bus);
+		EpicFightCreativeTabs.TABS.register(bus);
+		EpicFightItems.ITEMS.register(bus);
+		EpicFightParticles.PARTICLES.register(bus);
+		EpicFightEntities.ENTITIES.register(bus);
+		EpicFightBlocks.BLOCKS.register(bus);
+		EpicFightBlockEntities.BLOCK_ENTITIES.register(bus);
 		EpicFightLootTables.LOOT_MODIFIERS.register(bus);
 		EpicFightSounds.SOUNDS.register(bus);
 		EpicFightDataSerializers.ENTITY_DATA_SERIALIZER.register(bus);
@@ -196,60 +187,64 @@ public class EpicFightMod {
 		SkillDataKeys.DATA_KEYS.register(bus);
 		EpicFightPaintingVariants.PAINTING_VARIANTS.register(bus);
 		EpicFightCommandArgumentTypes.COMMAND_ARGUMENT_TYPES.register(bus);
-        
-        ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-client.toml").toString());
-        ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(CONFIG_FILE_PATH).toString());
-        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory(IngameConfigurationScreen::new));
-        ModLoadingContext.get().registerExtensionPoint(EpicFightExtensions.class, () -> new EpicFightExtensions(EpicFightCreativeTabs.ITEMS.get()));
-        
-    	if (ModList.get().isLoaded("geckolib")) {
+
+		ConfigManager.loadConfig(ConfigManager.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-client.toml").toString());
+		ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(CONFIG_FILE_PATH).toString());
+		ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory(IngameConfigurationScreen::new));
+		ModLoadingContext.get().registerExtensionPoint(EpicFightExtensions.class, () -> new EpicFightExtensions(EpicFightCreativeTabs.ITEMS.get()));
+
+		if (ModList.get().isLoaded("geckolib")) {
 			ICompatModule.loadCompatModule(GeckolibCompat.class);
 		}
-		
+
 		if (ModList.get().isLoaded("azurelib")) {
 			ICompatModule.loadCompatModule(AzureLibCompat.class);
 		}
-		
+
 		if (ModList.get().isLoaded("azurelibarmor")) {
 			ICompatModule.loadCompatModule(AzureLibArmorCompat.class);
 		}
-		
+
 		if (ModList.get().isLoaded("firstperson")) {
 			ICompatModule.loadCompatModule(FirstPersonCompat.class);
 		}
-		
+
 		if (ModList.get().isLoaded("skinlayers3d")) {
 			ICompatModule.loadCompatModule(SkinLayer3DCompat.class);
 		}
-		
+
 		if (ModList.get().isLoaded("oculus")) {
 			ICompatModule.loadCompatModule(IRISCompat.class);
 		}
-		
+
 		if (ModList.get().isLoaded("vampirism")) {
 			ICompatModule.loadCompatModule(VampirismCompat.class);
 		}
-        
-        if (ModList.get().isLoaded("werewolves")) {
+
+		if (ModList.get().isLoaded("werewolves")) {
 			ICompatModule.loadCompatModule(WerewolvesCompat.class);
 		}
-        
-        if (ModList.get().isLoaded("iceandfire")) {
+
+		if (ModList.get().isLoaded("iceandfire")) {
 			ICompatModule.loadCompatModule(IceAndFireCompat.class);
 		}
+
+		if (ModList.get().isLoaded("playeranimator")) {
+			ICompatModule.loadCompatModule(PlayerAnimatorCompat.class);
+		}
 	}
-    
-    /**
-     * FML Lifecycle Events
-     */
-    private void constructMod(final FMLConstructModEvent event) {
-    	event.enqueueWork(LivingMotion.ENUM_MANAGER::loadEnum);
-    	event.enqueueWork(SkillCategory.ENUM_MANAGER::loadEnum);
-    	event.enqueueWork(SkillSlot.ENUM_MANAGER::loadEnum);
-    	event.enqueueWork(Style.ENUM_MANAGER::loadEnum);
-    	event.enqueueWork(WeaponCategory.ENUM_MANAGER::loadEnum);
-    }
-    
+
+	/**
+	 * FML Lifecycle Events
+	 */
+	private void constructMod(final FMLConstructModEvent event) {
+		event.enqueueWork(LivingMotion.ENUM_MANAGER::loadEnum);
+		event.enqueueWork(SkillCategory.ENUM_MANAGER::loadEnum);
+		event.enqueueWork(SkillSlot.ENUM_MANAGER::loadEnum);
+		event.enqueueWork(Style.ENUM_MANAGER::loadEnum);
+		event.enqueueWork(WeaponCategory.ENUM_MANAGER::loadEnum);
+	}
+
 	private void doCommonStuff(final FMLCommonSetupEvent event) {
 		event.enqueueWork(EpicFightCommandArgumentTypes::registerArgumentTypes);
 		event.enqueueWork(EpicFightPotions::addRecipes);
@@ -260,8 +255,8 @@ public class EpicFightMod {
 		event.enqueueWork(WeaponTypeReloadListener::registerDefaultWeaponTypes);
 		event.enqueueWork(EpicFightMobEffects::addOffhandModifier);
 		event.enqueueWork(EpicFightLootTables::registerLootItemFunctionType);
-    }
-	
+	}
+
 	/**
 	 * Register Etc
 	 */
@@ -269,22 +264,22 @@ public class EpicFightMod {
 		PlayerModeCommand.register(event.getDispatcher());
 		PlayerSkillCommand.register(event.getDispatcher());
 		PlayerStaminaCommand.register(event.getDispatcher());
-    }
-	
+	}
+
 	public void addPackFindersEvent(AddPackFindersEvent event) {
 		if (event.getPackType() == PackType.CLIENT_RESOURCES) {
-            Path resourcePath = ModList.get().getModFileById(EpicFightMod.MODID).getFile().findResource("packs/epicfight_legacy");
-            PathPackResources pack = new PathPackResources(ModList.get().getModFileById(EpicFightMod.MODID).getFile().getFileName() + ":" + resourcePath, resourcePath, false);
-            Pack.ResourcesSupplier resourcesSupplier = (string) -> pack;
-            Pack.Info info = Pack.readPackInfo("epicfight_legacy", resourcesSupplier);
-            
-            if (info != null) {
-                event.addRepositorySource((source) ->
-    			source.accept(Pack.create("epicfight_legacy", Component.translatable("pack.epicfight_legacy.title"), false, resourcesSupplier, info, PackType.CLIENT_RESOURCES, Pack.Position.TOP, false, PackSource.BUILT_IN)));
-            }
-        }
-    }
-	
+			Path resourcePath = ModList.get().getModFileById(EpicFightMod.MODID).getFile().findResource("packs/epicfight_legacy");
+			PathPackResources pack = new PathPackResources(ModList.get().getModFileById(EpicFightMod.MODID).getFile().getFileName() + ":" + resourcePath, resourcePath, false);
+			Pack.ResourcesSupplier resourcesSupplier = (string) -> pack;
+			Pack.Info info = Pack.readPackInfo("epicfight_legacy", resourcesSupplier);
+
+			if (info != null) {
+				event.addRepositorySource((source) ->
+						source.accept(Pack.create("epicfight_legacy", Component.translatable("pack.epicfight_legacy.title"), false, resourcesSupplier, info, PackType.CLIENT_RESOURCES, Pack.Position.TOP, false, PackSource.BUILT_IN)));
+			}
+		}
+	}
+
 	private void addReloadListnerEvent(final AddReloadListenerEvent event) {
 		event.addListener(new ColliderPreset());
 		event.addListener(new SkillManager());
@@ -292,45 +287,45 @@ public class EpicFightMod {
 		event.addListener(new ItemCapabilityReloadListener());
 		event.addListener(new MobPatchReloadListener());
 	}
-	
+
 	@Mod.EventBusSubscriber(modid = EpicFightMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-        	CLIENT_CONFIGS = new EpicFightOptions();
-        	new ClientEngine();
-        	
-        	EpicFightMod.getInstance().animatorProvider = ClientAnimator::getAnimator;
-    		EntityPatchProvider.registerEntityPatchesClient();
-    		SkillBookScreen.registerIconItems();
-    		EpicFightItemProperties.registerItemProperties();
-        }
-        
-        @SubscribeEvent
-        public static void registerResourcepackReloadListnerEvent(final RegisterClientReloadListenersEvent event) {
-    		event.registerReloadListener(new JointMaskReloadListener());
-    		event.registerReloadListener(Meshes.INSTANCE);
-    		event.registerReloadListener(AnimationManager.getInstance());
-    		event.registerReloadListener(ItemSkins.INSTANCE);
-    	}
-    }
-	
+	public static class ClientModEvents {
+		@SubscribeEvent
+		public static void onClientSetup(FMLClientSetupEvent event) {
+			CLIENT_CONFIGS = new EpicFightOptions();
+			new ClientEngine();
+
+			EpicFightMod.getInstance().animatorProvider = ClientAnimator::getAnimator;
+			EntityPatchProvider.registerEntityPatchesClient();
+			SkillBookScreen.registerIconItems();
+			EpicFightItemProperties.registerItemProperties();
+		}
+
+		@SubscribeEvent
+		public static void registerResourcepackReloadListnerEvent(final RegisterClientReloadListenersEvent event) {
+			event.registerReloadListener(new JointMaskReloadListener());
+			event.registerReloadListener(Meshes.INSTANCE);
+			event.registerReloadListener(AnimationManager.getInstance());
+			event.registerReloadListener(ItemSkins.INSTANCE);
+		}
+	}
+
 	@Mod.EventBusSubscriber(modid = EpicFightMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.DEDICATED_SERVER)
-    public static class ServerModEvents {
+	public static class ServerModEvents {
 		@SubscribeEvent
 		public static void doServerStuff(final FMLDedicatedServerSetupEvent event) {
 			EpicFightMod.getInstance().animatorProvider = ServerAnimator::getAnimator;
 		}
-    }
-	
+	}
+
 	@Mod.EventBusSubscriber(modid = EpicFightMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.DEDICATED_SERVER)
-    public static class ServerForgeEvents {
+	public static class ServerForgeEvents {
 		@SubscribeEvent(priority = EventPriority.HIGHEST)
 		public static void addReloadListnerEvent(final AddReloadListenerEvent event) {
 			event.addListener(AnimationManager.getInstance());
 		}
-    }
-	
+	}
+
 	private void buildCreativeTabWithSkillBooks(final BuildCreativeModeTabContentsEvent event) {
 		/**
 		 * Accept learnable skills for each mod by {@link EpicFightExtensions#skillBookCreativeTab}.
@@ -356,15 +351,15 @@ public class EpicFightMod {
 			});
 		});
 	}
-	
+
 	/**
 	 * Epic Fight utils
 	 */
 	public static Animator getAnimator(LivingEntityPatch<?> entitypatch) {
 		return EpicFightMod.getInstance().animatorProvider.apply(entitypatch);
 	}
-	
+
 	public static boolean isPhysicalClient() {
-    	return FMLEnvironment.dist == Dist.CLIENT;
-    }
+		return FMLEnvironment.dist == Dist.CLIENT;
+	}
 }
