@@ -232,6 +232,9 @@ public class EpicFightMod {
 		if (ModList.get().isLoaded("playeranimator")) {
 			ICompatModule.loadCompatModule(PlayerAnimatorCompat.class);
 		}
+		if (ModList.get().isLoaded("scguns")) {
+			ICompatModule.loadCompatModule(SCGunsCompat.class);
+		}
 	}
 
 	/**

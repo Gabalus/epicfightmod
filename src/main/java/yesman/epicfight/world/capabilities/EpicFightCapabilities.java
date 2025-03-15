@@ -11,6 +11,7 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.projectile.ProjectilePatch;
+import yesman.epicfight.world.capabilities.provider.GunOwnerCapabilityProvider;
 import yesman.epicfight.world.capabilities.skill.CapabilitySkill;
 
 @SuppressWarnings("rawtypes")
@@ -19,6 +20,7 @@ public class EpicFightCapabilities {
     public static final Capability<CapabilityItem> CAPABILITY_ITEM = CapabilityManager.get(new CapabilityToken<>(){});
     public static final Capability<ProjectilePatch> CAPABILITY_PROJECTILE = CapabilityManager.get(new CapabilityToken<>(){});
     public static final Capability<CapabilitySkill> CAPABILITY_SKILL = CapabilityManager.get(new CapabilityToken<>(){});
+	public static final Capability<GunOwnerCapabilityProvider.OwnerId> OWNER_ID = CapabilityManager.get(new CapabilityToken<>() {});
 	
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		event.register(CapabilityItem.class);

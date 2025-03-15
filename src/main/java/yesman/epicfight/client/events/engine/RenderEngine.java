@@ -65,6 +65,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
+import top.ribs.scguns.item.GunItem;
 import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
 import yesman.epicfight.api.client.forgeevent.RenderEnderDragonEvent;
 import yesman.epicfight.api.client.model.AnimatedMesh;
@@ -680,26 +681,36 @@ public class RenderEngine {
 		@SubscribeEvent(priority = EventPriority.HIGHEST)
 		public static void renderHand(RenderHandEvent event) {
 			LocalPlayerPatch playerpatch = ClientEngine.getInstance().getPlayerPatch();
-			
+
 			if (playerpatch != null) {
+
 				boolean isBattleMode = playerpatch.isBattleMode();
-				
-				if ((isBattleMode || !EpicFightMod.CLIENT_CONFIGS.filterAnimation.getValue()) && EpicFightMod.CLIENT_CONFIGS.firstPersonModel.getValue()) {
+
+				if ((isBattleMode || !EpicFightMod.CLIENT_CONFIGS.filterAnimation.getValue()) && EpicFightMod.CLIENT_CONFIGS.firstPersonModel.getValue()&& !(event.getHand() == InteractionHand.OFF_HAND && playerpatch.getOriginal().getOffhandItem().getItem() instanceof GunItem) && !(event.getHand() == InteractionHand.MAIN_HAND && playerpatch.getOriginal().getMainHandItem().getItem() instanceof GunItem)) {
 					ItemSkin mainhandItemSkin = ItemSkins.getItemSkin(playerpatch.getOriginal().getMainHandItem().getItem());
 					ItemSkin offhandItemSkin = ItemSkins.getItemSkin(playerpatch.getOriginal().getOffhandItem().getItem());
-					boolean useEpicFightModel = (mainhandItemSkin == null || !mainhandItemSkin.forceVanillaFirstPerson()) && (offhandItemSkin == null || !offhandItemSkin.forceVanillaFirstPerson());
-					
+					boolean useEpicFightModel = (mainhandItemSkin == null || !mainhandItemSkin.forceVanillaFirstPerson())
+							&& (offhandItemSkin == null || !offhandItemSkin.forceVanillaFirstPerson());
+
 					if (useEpicFightModel) {
 						if (event.getHand() == InteractionHand.MAIN_HAND) {
-							renderEngine.firstPersonRenderer.render(playerpatch.getOriginal(), playerpatch, (LivingEntityRenderer)renderEngine.minecraft.getEntityRenderDispatcher().getRenderer(playerpatch.getOriginal()), event.getMultiBufferSource(),
-																	event.getPoseStack(), event.getPackedLight(), event.getPartialTick());
+							renderEngine.firstPersonRenderer.render(
+									playerpatch.getOriginal(),
+									playerpatch,
+									(LivingEntityRenderer) renderEngine.minecraft.getEntityRenderDispatcher().getRenderer(playerpatch.getOriginal()),
+									event.getMultiBufferSource(),
+									event.getPoseStack(),
+									event.getPackedLight(),
+									event.getPartialTick()
+							);
 						}
-						
+
 						event.setCanceled(true);
 					}
 				}
 			}
 		}
+
 		
 		@SubscribeEvent
 		public static void renderWorldLast(RenderLevelStageEvent event) {

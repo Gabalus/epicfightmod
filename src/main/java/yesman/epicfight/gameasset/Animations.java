@@ -59,28 +59,8 @@ import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimation
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
 import yesman.epicfight.api.animation.property.MoveCoordFunctions;
-import yesman.epicfight.api.animation.types.ActionAnimation;
-import yesman.epicfight.api.animation.types.AimAnimation;
-import yesman.epicfight.api.animation.types.AirSlashAnimation;
-import yesman.epicfight.api.animation.types.AttackAnimation;
+import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
-import yesman.epicfight.api.animation.types.BasicAttackAnimation;
-import yesman.epicfight.api.animation.types.DashAttackAnimation;
-import yesman.epicfight.api.animation.types.DodgeAnimation;
-import yesman.epicfight.api.animation.types.EntityState;
-import yesman.epicfight.api.animation.types.GuardAnimation;
-import yesman.epicfight.api.animation.types.HitAnimation;
-import yesman.epicfight.api.animation.types.InvincibleAnimation;
-import yesman.epicfight.api.animation.types.KnockdownAnimation;
-import yesman.epicfight.api.animation.types.LongHitAnimation;
-import yesman.epicfight.api.animation.types.MirrorAnimation;
-import yesman.epicfight.api.animation.types.MountAttackAnimation;
-import yesman.epicfight.api.animation.types.MovementAnimation;
-import yesman.epicfight.api.animation.types.OffAnimation;
-import yesman.epicfight.api.animation.types.RangedAttackAnimation;
-import yesman.epicfight.api.animation.types.ReboundAnimation;
-import yesman.epicfight.api.animation.types.SelectiveAnimation;
-import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.animation.types.grappling.GrapplingAttackAnimation;
 import yesman.epicfight.api.animation.types.grappling.GrapplingTryAnimation;
 import yesman.epicfight.api.animation.types.procedural.EnderDragonActionAnimation;
@@ -486,10 +466,42 @@ public class Animations {
 	public static StaticAnimation OFF_ANIMATION_HIGHEST;
 	public static StaticAnimation OFF_ANIMATION_MIDDLE;
 	public static StaticAnimation OFF_ANIMATION_LOWEST;
+
+	public static StaticAnimation BIPED_HOLD_PISTOL;
+	public static StaticAnimation BIPED_WALK_PISTOL;
+	public static StaticAnimation BIPED_RUN_PISTOL;
+	public static StaticAnimation BIPED_SNEAK_PISTOL;
+	public static StaticAnimation BIPED_PISTOL_AIM;
+	public static StaticAnimation BIPED_PISTOL_RELOAD;
+	public static StaticAnimation BIPED_HOLD_RIFLE;
+	public static StaticAnimation BIPED_WALK_RIFLE;
+	public static StaticAnimation BIPED_RUN_RIFLE;
+	public static StaticAnimation BIPED_SNEAK_RIFLE;
+	public static StaticAnimation BIPED_RIFLE_AIM;
+	public static StaticAnimation BIPED_RIFLE_RELOAD;
+	public static StaticAnimation BIPED_HOLD_BAZOOKA;
+	public static StaticAnimation BIPED_WALK_BAZOOKA;
+	public static StaticAnimation BIPED_RUN_BAZOOKA;
+	public static StaticAnimation BIPED_SNEAK_BAZOOKA;
+	public static StaticAnimation BIPED_BAZOOKA_AIM;
+	public static StaticAnimation BIPED_BAZOOKA_RELOAD;
+	public static StaticAnimation BIPED_HOLD_MINI_GUN;
+	public static StaticAnimation BIPED_WALK_MINI_GUN;
+	public static StaticAnimation BIPED_RUN_MINI_GUN;
+	public static StaticAnimation BIPED_SNEAK_MINI_GUN;
+	public static StaticAnimation BIPED_MINI_GUN_AIM;
+	public static StaticAnimation BIPED_MINI_GUN_RELOAD;
+	public static StaticAnimation BIPED_GRENADE_ARM;
+	public static StaticAnimation BIPED_GRENADE_THROW;
 	
 	@SubscribeEvent
 	public static void registerAnimations(AnimationRegistryEvent event) {
 		event.getRegistryMap().put(EpicFightMod.MODID, Animations::build);
+	}
+
+	@SubscribeEvent
+	public static void registerAnimationsScorched(AnimationRegistryEvent event) {
+		event.getRegistryMap().put("epicscorch", Animations::buildScorched);
 	}
 	
 	private static void build() {
@@ -1889,6 +1901,29 @@ public class Animations {
 				.addProperty(ActionAnimationProperty.STOP_MOVEMENT, true);
 		
 		SHARP_STAB = new AttackAnimation(0.15F, 0.05F, 0.1F, 0.15F, 0.7F, ColliderPreset.LONGSWORD, biped.toolR, "biped/skill/sharp_stab", biped);
+
+	}
+
+	private static void buildScorched(){
+		HumanoidArmature biped = Armatures.BIPED;
+		BIPED_HOLD_PISTOL = new GunAimAnimation(true, "biped/living/hold_pistol_mid", "biped/living/hold_pistol_up", "biped/living/hold_pistol_down", "biped/living/hold_pistol_up", biped);
+		BIPED_WALK_PISTOL = new GunMoveAnimation(true, "biped/living/walk_pistol_mid", "biped/living/hold_pistol_up", "biped/living/hold_pistol_down", "biped/living/hold_pistol_up", biped);
+		BIPED_RUN_PISTOL = new GunMoveAnimation(true, "biped/living/run_pistol_mid", "biped/living/hold_pistol_up", "biped/living/hold_pistol_down", "biped/living/hold_pistol_up", biped);
+		BIPED_SNEAK_PISTOL = new GunMoveAnimation(true, "biped/living/sneak_pistol_mid", "biped/living/hold_pistol_up", "biped/living/hold_pistol_down", "biped/living/hold_pistol_up", biped);
+		BIPED_PISTOL_AIM = new GunAimAnimation(true, "biped/combat/pistol_aim_mid", "biped/combat/pistol_aim_up", "biped/combat/pistol_aim_down", "biped/combat/pistol_aim_up", biped);
+		BIPED_PISTOL_RELOAD = new LockedAnimation(true, "biped/combat/pistol_reload", biped);
+		BIPED_HOLD_RIFLE = new GunAimAnimation(true, "biped/living/hold_rifle_mid", "biped/living/hold_rifle_up", "biped/living/hold_rifle_down", "biped/living/hold_rifle_up", biped);
+		BIPED_WALK_RIFLE = new GunMoveAnimation(true, "biped/living/walk_rifle_mid", "biped/living/hold_rifle_up", "biped/living/hold_rifle_down", "biped/living/hold_rifle_up", biped);
+		BIPED_RUN_RIFLE = new GunMoveAnimation(true, "biped/living/run_rifle_mid", "biped/living/hold_rifle_up", "biped/living/hold_rifle_down", "biped/living/hold_rifle_up", biped);
+		BIPED_SNEAK_RIFLE = new GunMoveAnimation(true, "biped/living/sneak_rifle_mid", "biped/living/hold_rifle_up", "biped/living/hold_rifle_down", "biped/living/hold_rifle_up", biped);
+		BIPED_RIFLE_AIM = new GunAimAnimation(true, "biped/combat/rifle_aim_mid", "biped/combat/rifle_aim_up", "biped/combat/rifle_aim_down", "biped/combat/rifle_aim_up", biped);
+		BIPED_RIFLE_RELOAD = new LockedAnimation(true, "biped/combat/rifle_reload", biped);
+		BIPED_HOLD_BAZOOKA = new GunAimAnimation(true, "biped/living/hold_bazooka_mid", "biped/living/hold_bazooka_up", "biped/living/hold_bazooka_down", "biped/living/hold_bazooka_up", biped);
+		BIPED_BAZOOKA_AIM = new GunAimAnimation(true, "biped/combat/bazooka_aim_mid", "biped/combat/bazooka_aim_up", "biped/combat/bazooka_aim_down", "biped/combat/bazooka_aim_up", biped);
+		BIPED_BAZOOKA_RELOAD = new LockedAnimation(true, "biped/combat/bazooka_reload", biped);
+		BIPED_HOLD_MINI_GUN = new GunAimAnimation(true, "biped/living/hold_mini_gun_mid", "biped/living/hold_mini_gun_up", "biped/living/hold_mini_gun_down", "biped/living/hold_mini_gun_up", biped);
+		BIPED_GRENADE_ARM = new GunAimAnimation(false, "biped/combat/grenade_arm", "biped/combat/grenade_arm", "biped/combat/grenade_arm", "biped/combat/grenade_arm", biped);
+		BIPED_GRENADE_THROW = new ReboundAnimation(false, "biped/combat/grenade_throw", "biped/combat/grenade_throw", "biped/combat/grenade_throw", "biped/combat/grenade_throw", biped);
 	}
 	
 	public static class ReusableSources {
