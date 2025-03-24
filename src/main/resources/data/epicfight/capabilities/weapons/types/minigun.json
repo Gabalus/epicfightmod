@@ -31,6 +31,9 @@
       "sit": "epicscorch:biped/living/hold_mini_gun_mid"
     }
   },
+  "hit_sound": "epicfight:entity.hit.blunt_hard",
+  "hit_particle": "epicfight:hit_blunt",
+  "swing_sound": "epicfight:entity.weapon.whoosh_hard",
   "styles": {
     "default": "ranged",
     "cases": []
@@ -38,8 +41,7 @@
   "combos": {
     "common": [
       "wom:biped/skill/kick",
-      "wom:biped/skill/kick",
-      "wom:biped/skill/kick"
+      "wom:biped/combat/enderblaster_twohand_tishnaw"
     ]
   },
   "category": "ranged"
