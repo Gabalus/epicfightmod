@@ -666,10 +666,6 @@ public abstract class PlayerPatch<T extends Player> extends LivingEntityPatch<T>
 		}
 	}
 
-	public Player getPlayer() {
-		return this.player;
-	}
-
 	public enum PlayerMode {
 		MINING, BATTLE
 	}
