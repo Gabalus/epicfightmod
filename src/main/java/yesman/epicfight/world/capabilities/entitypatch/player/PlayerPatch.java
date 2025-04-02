@@ -110,6 +110,11 @@ public abstract class PlayerPatch<T extends Player> extends LivingEntityPatch<T>
 		this.eventListeners.addEventListener(EventType.ACTION_EVENT_SERVER, PLAYER_EVENT_UUID, (playerEvent) -> {
 			this.resetActionTick();
 		});
+/*		UUID globalAttackSpeedLimiterUUID = UUID.fromString("d5c8e5e4-8c2a-4e3f-9f3a-123456789abc");
+		this.eventListeners.addEventListener(EventType.MODIFY_ATTACK_SPEED_EVENT, globalAttackSpeedLimiterUUID, (modifyEvent) -> {
+			float currentSpeed = modifyEvent.getAttackSpeed();
+			modifyEvent.setAttackSpeed(Math.min(5.0F, currentSpeed));
+		});*/
 	}
 
 	@Override
