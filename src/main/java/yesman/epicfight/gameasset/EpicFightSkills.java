@@ -23,6 +23,7 @@ import yesman.epicfight.skill.dodge.DodgeSkill;
 import yesman.epicfight.skill.dodge.KnockdownWakeupSkill;
 import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.skill.guard.ImpactGuardSkill;
+import yesman.epicfight.skill.guard.MirrorParrySkill;
 import yesman.epicfight.skill.guard.ParryingSkill;
 import yesman.epicfight.skill.identity.MeteorSlamSkill;
 import yesman.epicfight.skill.identity.RevelationSkill;
@@ -38,6 +39,7 @@ import yesman.epicfight.skill.passive.PassiveSkill;
 import yesman.epicfight.skill.passive.StaminaPillagerSkill;
 import yesman.epicfight.skill.passive.SwordmasterSkill;
 import yesman.epicfight.skill.passive.TechnicianSkill;
+import yesman.epicfight.skill.passive.SwiftEdgeSkill;
 import yesman.epicfight.skill.weaponinnate.BattojutsuSkill;
 import yesman.epicfight.skill.weaponinnate.BladeRushSkill;
 import yesman.epicfight.skill.weaponinnate.ConditionalWeaponInnateSkill;
@@ -69,6 +71,9 @@ public class EpicFightSkills {
 	public static Skill GUARD;
 	public static Skill PARRYING;
 	public static Skill IMPACT_GUARD;
+	public static Skill MIRROR_PARRY;
+
+	public static Skill SWIFT_EDGE;
 	/** Passive skills **/
 	public static Skill BERSERKER;
 	public static Skill DEATH_HARVEST;
@@ -121,6 +126,9 @@ public class EpicFightSkills {
 		GUARD = modRegistry.build("guard", GuardSkill::new, GuardSkill.createGuardBuilder());
 		PARRYING = modRegistry.build("parrying", ParryingSkill::new, ParryingSkill.createActiveGuardBuilder());
 		IMPACT_GUARD = modRegistry.build("impact_guard", ImpactGuardSkill::new, ImpactGuardSkill.createEnergizingGuardBuilder());
+		MIRROR_PARRY = modRegistry.build("mirror_parry", MirrorParrySkill::new, MirrorParrySkill.createActiveGuardBuilder());
+
+		SWIFT_EDGE = modRegistry.build("swift_edge", SwiftEdgeSkill::new, PassiveSkill.createPassiveBuilder());
 		
 		BERSERKER = modRegistry.build("berserker", BerserkerSkill::new, PassiveSkill.createPassiveBuilder());
 		DEATH_HARVEST = modRegistry.build("death_harvest", DeathHarvestSkill::new, PassiveSkill.createPassiveBuilder());
